@@ -1,0 +1,6 @@
+[
+    { "firstName": "Glacy", "lastName": "Maria da Silva Leitao", "email": "glacyleitao@gmail.com", "password": "teuso@123", "program": "Computer Programmer", "campus": "York University" },
+    { "firstName": "Camila", "lastName": "Fernanda Marsola", "email": "camilamarsola@gmail.com", "password": "132435", "program": "Business Administration", "campus": "York University" },
+    { "firstName": "Rosangela", "lastName": "Aparecida Cordeiro Leitao", "email": "rolei@gmail.com", "password": "152635", "program": "History of Canada", "campus": "York University" },
+    { "firstName": "Galdina", "lastName": "Maria da Silva", "email": "gal2020@gmail.com", "password": "938473", "program": "Economy", "campus": "York University" }
+]
