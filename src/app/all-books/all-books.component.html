@@ -1,13 +1,18 @@
-<div class="row">
+<ng-template #displayErrMessage>
+    <h3>There is no available books</h3>
+</ng-template>
+
+<ng-template #displayBooks>
     <div class="col-sm-11" style="margin: 0 auto;">
         <h3>All available books</h3>
         <table class="table">
             <tr *ngFor="let b of books">
-                <td><img src="{{b.thumbnailUrl}}" style="width:50px;"></td>
-                <td><a href="routeBook({{b.isbn}})">{{b.title}}</a></td>
+                <td><img [src]="b.thumbnailUrl" (click)="routeBook(b._id)" class="width-cursor"></td>
+                <td><a href="javascript:void(0)" (click)="routeBook(b._id)">{{b.title}}</a></td>
                 <td>{{b.categories}}</td>
-                <td><a href="#" class="btn btn-primary">Borrow</a></td>
             </tr>
         </table>
     </div>
-</div>
+</ng-template>
+
+<div class="row" *ngIf="isBooksListOk; then displayBooks else displayErrMessage"></div>

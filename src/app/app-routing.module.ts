@@ -8,7 +8,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 const routes: Routes = [
   { path: 'your-books', component: YourBooksComponent },
   { path: 'list-all-books', component: AllBooksComponent },
-  { path: 'book-info/:id', component: BookComponent },
+  { path: 'book-info/:_id', component: BookComponent },
   { path: '', redirectTo: '/your-books', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

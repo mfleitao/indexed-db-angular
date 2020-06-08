@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { IdbService } from '../services/idb.service';
 import { Router } from '@angular/router';
+import { Book } from '../model/book';
 
 @Component({
   selector: 'app-all-books',
@@ -9,17 +10,23 @@ import { Router } from '@angular/router';
 })
 export class AllBooksComponent implements OnInit {
   
-  books: any;
+  books: Array<Book>;
+  isBooksListOk: boolean = true;
+
+  // @Output() onBorrow = new EventEmitter();
 
   constructor(private idb: IdbService, private router: Router) { }
 
-  routeBook(id: string) {
-    this.router.navigate(['book-info/','id']);
+  routeBook(_id: string) {
+    this.router.navigate(['book-info/',_id]);
   }
 
   ngOnInit(): void {
     this.idb.getAll('books-store').then(response => {
-      this.books = response;
+      this.books = response as Array<Book>;
+    }).catch(err => {
+      console.log("No books returned "+ err);
+      this.isBooksListOk = false;
     });
   }
 

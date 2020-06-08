@@ -1,10 +1,11 @@
 import { Student } from './student';
 import { Book } from './book';
 
-export class BorrowedBooks {
+export class Review {
     _id: number;
+    title: string;
     student: Student;
     book: Book;
-    borrowedDate: Date;
-    returnDate: Date;
+    date: Date;
+    longText: string;
 }

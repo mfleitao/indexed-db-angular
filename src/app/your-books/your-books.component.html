@@ -1,10 +1,19 @@
+<div *ngIf="isBookCancel; then cancelMessage"></div>
+
+<ng-template #cancelMessage>
+<div class="alert alert-success">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> The book has been cancelled.
+</div>
+</ng-template>
+
 <div class="row">
     <div class="col-sm-3">
-        <h3>Glacy Maria da Silva Leitao</h3>
+        <h3>{{student.firstName}} {{student.lastName}}</h3>
         <div class="rounded alert-info p-2">
-            <strong>Program:</strong> Computer Programmer <br/>
-            <strong>Campus:</strong> York University | 
-            <strong>ID:</strong> 148300171
+            <strong>Program:</strong> {{student.program}} <br/>
+            <strong>Campus:</strong> {{student.campus}} | 
+            <strong>ID:</strong> {{student._id}}
         </div>
     </div>
     <div class="col-sm-9">
@@ -15,28 +24,48 @@
                     <tr>
                         <th>Title</th>
                         <th>Borrowed Date</th>
-                        <th>Back Date</th>
-                        <th>Placed Hold</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Java Persistence with Hibernate</td>
-                        <td>02/06/2020</td>
-                        <td>10/06/2020</td>
-                        <td><button class="btn btn-danger">Cancel</button></td>
-                    </tr>
-                    <tr>
-                        <td>jQuery in Action</td>
-                        <td>02/06/2020</td>
-                        <td>10/06/2020</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Building Secure and Reliable Network Applications</td>
-                        <td>02/06/2020</td>
-                        <td>10/06/2020</td>
-                        <td></td>
+                    <tr *ngFor="let your of yourBooks">
+                        <td>{{your.book.title}}</td>
+                        <td>{{your.borrowedDate | date:'longDate'}}</td>
+                        <td><button class="btn btn-primary" data-toggle="modal" data-target="#review-form-modal">Add Review</button></td>
+                        <td><button (click)="cancelBook(your._id)" class="btn btn-danger">Cancel</button></td>
+                        
+                        <div class="modal" id="review-form-modal">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Add Review</h5>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                   
+                                    <div class="modal-body">
+                                        <div class="row" style="padding:10px 20px;">
+                                            <form style="width: 100%;">
+                                                <div class="form-group">
+                                                    <label for="title">Title:</label>
+                                                    <input type="text" class="form-control" id="titleReview">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text">Text:</label>
+                                                    <textarea class="form-control" rows="5" id="textReview"></textarea>
+                                                </div>
+                                                <input type="hidden" name="bookId" value="your._id">
+                                                <input type="hidden" name="studentId" value="student._id">
+                                                <button type="button" (click)="addReview()" class="btn btn-primary">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
                     </tr>
                 </tbody>
             </table>

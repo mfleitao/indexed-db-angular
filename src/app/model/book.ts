@@ -1,5 +1,6 @@
 
 export class Book {
+    _id: number;
     isbn: number;
     title: string;
     pageCount: number;

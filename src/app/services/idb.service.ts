@@ -1,17 +1,32 @@
 import { Injectable } from '@angular/core';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IdbService {
+
+    BOOKS: string = "books-store";
+    BORROWED_BOOKS: string = "borrowed-books-store";
+    STUDENTS: string = "students-store";
     
-    constructor() {
+    constructor(private dataService: DataService) {
         let open = this.openDB();
         open.onupgradeneeded = () => {
-          let db = open.result;
-          db.createObjectStore('books-store', { autoIncrement: true });
-          db.createObjectStore('borrowed-books-store', { autoIncrement: true });
-          db.createObjectStore('students-store', { autoIncrement: true });
+            let db = open.result;
+            
+            db.createObjectStore('books-store', { keyPath: '_id', autoIncrement: true });
+            dataService.getBooks().subscribe(data => {
+                data.forEach(book => this.add('books-store', book));
+            });
+
+            db.createObjectStore('students-store', { keyPath: '_id',  autoIncrement: true });
+            dataService.getStudents().subscribe(data => {
+                data.forEach(student => this.add('students-store', student));
+            });
+
+            db.createObjectStore('borrowed-books-store', { keyPath: '_id', autoIncrement: true });
+            db.createObjectStore('reviews-store', { keyPath: '_id', autoIncrement: true });
         }
     }
 
@@ -19,29 +34,37 @@ export class IdbService {
         return window.indexedDB.open('idb-my-library', 1);
     } 
 
-    public add(objectStore, value): void {
-        let open = this.openDB();
-        open.onsuccess = () => {
-            let db = open.result;
-            let tx = db.transaction(objectStore, 'readwrite');
-            let store = tx.objectStore(objectStore);
-            store.add(value);
-            tx.oncomplete = () => db.close();
-        }
+    public add(objectStore, value) {
+        return new Promise((resolve, reject) => {
+            let open = this.openDB();
+            open.onsuccess = () => {
+                let db = open.result;
+                let tx = db.transaction(objectStore, 'readwrite');
+                let store = tx.objectStore(objectStore);
+                let request = store.add(value);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+                tx.oncomplete = () => db.close();
+            }
+        });
     }
     
-    public update(objectStore, value, key): void {
-        let open = this.openDB();
-        open.onsuccess = () => {
-            let db = open.result;
-            let tx = db.transaction(objectStore, 'readwrite');
-            let store = tx.objectStore(objectStore);
-            store.put(value, key);
-            tx.oncomplete = () => db.close();
-        }
+    public update(objectStore, value, key) {
+        return new Promise((resolve, reject) => {
+            let open = this.openDB();
+            open.onsuccess = () => {
+                let db = open.result;
+                let tx = db.transaction(objectStore, 'readwrite');
+                let store = tx.objectStore(objectStore);
+                let request = store.put(value);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+                tx.oncomplete = () => db.close();
+            }
+        });
     }
     
-    public get(objectStore, key) {
+    public get(objectStore, key: number) {
         return new Promise((resolve, reject) => {
             let open = this.openDB();
             open.onsuccess = () => {
@@ -70,16 +93,42 @@ export class IdbService {
             }
         });
     }
+
+    public getAllBooksByStudent(objectStore, key) {
+        let items: Array<any> = [];
+        return new Promise((resolve, reject) => {
+            let open = this.openDB();
+            open.onsuccess = () => {
+                let db = open.result;
+                let tx = db.transaction(objectStore, 'readwrite');
+                let store = tx.objectStore(objectStore);
+                let request = store.getAll();
+                request.onsuccess = () => {
+                    request.result.forEach(data => {
+                        if (data.student._id == key)
+                            items.push(data);
+                    });
+                    resolve(items);
+                }
+                request.onerror = () => reject(request.error);
+                tx.oncomplete = () => db.close();
+            }
+        });
+    }
     
-    public delete(objectStore, key): void {
-        let open = this.openDB();
-        open.onsuccess = () => {
-            let db = open.result;
-            let tx = db.transaction(objectStore, 'readwrite');
-            let store = tx.objectStore(objectStore);
-            store.delete(key);
-            tx.oncomplete = () => db.close();
-        }
+    public delete(objectStore, key) {
+        return new Promise((resolve, reject) => {
+            let open = this.openDB();
+            open.onsuccess = () => {
+                let db = open.result;
+                let tx = db.transaction(objectStore, 'readwrite');
+                let store = tx.objectStore(objectStore);
+                let request = store.delete(key);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+                tx.oncomplete = () => db.close();
+            }
+        });
     }
     
 }
