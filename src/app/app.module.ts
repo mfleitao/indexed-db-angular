@@ -12,7 +12,6 @@ import { NavComponent } from './nav/nav.component';
 import { ContentComponent } from './content/content.component';
 import { YourBooksComponent } from './your-books/your-books.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AddReviewComponent } from './add-review/add-review.component';
 import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
@@ -24,8 +23,7 @@ import { JwtModule } from '@auth0/angular-jwt';
     NavComponent,
     ContentComponent,
     YourBooksComponent,
-    PageNotFoundComponent,
-    AddReviewComponent
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
