@@ -13,8 +13,6 @@ export class AllBooksComponent implements OnInit {
   books: Array<Book>;
   isBooksListOk: boolean = true;
 
-  // @Output() onBorrow = new EventEmitter();
-
   constructor(private idb: IdbService, private router: Router) { }
 
   routeBook(_id: string) {
@@ -22,7 +20,7 @@ export class AllBooksComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.idb.getAll('books-store').then(response => {
+    this.idb.getAll(this.idb.BOOKS).then(response => {
       this.books = response as Array<Book>;
     }).catch(err => {
       console.log("No books returned "+ err);

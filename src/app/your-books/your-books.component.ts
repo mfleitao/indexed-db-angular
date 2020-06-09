@@ -3,6 +3,7 @@ import { IdbService } from '../services/idb.service';
 import { Student } from '../model/student';
 import { BorrowedBooks } from '../model/borrowed-books';
 import { Router, NavigationEnd } from '@angular/router';
+import { Book } from '../model/book';
 
 @Component({
   selector: 'app-your-books',
@@ -11,26 +12,15 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class YourBooksComponent implements OnInit {
 
-  student: Student;
   yourBooks: BorrowedBooks;
-  currentStudentTest: number = 3; // Rosangela...
+  currentStudentTest: number = 1; // Glacy Leitao...
   isBookCancel: boolean = false;
-
-  titleReview: string;
-  textReview: string;
 
   constructor(
     private idb: IdbService,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.idb.get(this.idb.STUDENTS, this.currentStudentTest)
-      .then(data => {
-        this.student = data as Student;
-      }).catch(err => {
-        console.log("None Student was found: "+ err);
-    });
-
     this.idb.getAllBooksByStudent(this.idb.BORROWED_BOOKS, this.currentStudentTest)
       .then(data => {
         this.yourBooks = data as BorrowedBooks;
@@ -48,9 +38,6 @@ export class YourBooksComponent implements OnInit {
       .catch(err => {
         console.log("The book could be not cancel "+ err);
     });
-  }
-
-  addReview() {
   }
 
 }

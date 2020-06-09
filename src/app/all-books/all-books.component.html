@@ -3,15 +3,29 @@
 </ng-template>
 
 <ng-template #displayBooks>
-    <div class="col-sm-11" style="margin: 0 auto;">
+    <div class="col-10" style="margin: 0 auto;">
         <h3>All available books</h3>
-        <table class="table">
+        <!-- <table class="table">
             <tr *ngFor="let b of books">
                 <td><img [src]="b.thumbnailUrl" (click)="routeBook(b._id)" class="width-cursor"></td>
                 <td><a href="javascript:void(0)" (click)="routeBook(b._id)">{{b.title}}</a></td>
                 <td>{{b.categories}}</td>
             </tr>
-        </table>
+        </table> -->
+
+        <div *ngFor="let b of books" class="row border-top p-3">
+            <div class="col-2 text-right">
+                <img [src]="b.thumbnailUrl" (click)="routeBook(b._id)" class="width-cursor">
+            </div>
+            <div class="col-9">
+                <a href="javascript:void(0)" (click)="routeBook(b._id)">{{b.title}}</a>
+                <h5><strong>Categories: </strong>{{b.categories}}</h5>
+                <h6><strong>Authors: </strong>{{b.authors}}</h6>
+                <span class="badge badge-light">Pages: {{b.pageCount}}</span>
+                <span class="badge badge-light">ISBN: {{b.isbn}}</span>
+            </div>
+        </div>
+
     </div>
 </ng-template>
 

@@ -1,3 +1,8 @@
 img.width-cursor {
-    width:50px; cursor: pointer;
+    width:90px; cursor: pointer;
 }
+
+h5 { font-size: 16px; }
+h6 { font-size: 14px; }
+
+a {  font-size: 22px; }

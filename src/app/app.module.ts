@@ -12,6 +12,9 @@ import { ContentComponent } from './content/content.component';
 import { YourBooksComponent } from './your-books/your-books.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { JwtModule } from '@auth0/angular-jwt';
+import { UserDataComponent } from './user-data/user-data.component';
+import { ReviewAddComponent } from './review-add/review-add.component';
+import { NewStudentComponent } from './new-student/new-student.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { JwtModule } from '@auth0/angular-jwt';
     NavComponent,
     ContentComponent,
     YourBooksComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    UserDataComponent,
+    ReviewAddComponent,
+    NewStudentComponent
   ],
   imports: [
     BrowserModule,

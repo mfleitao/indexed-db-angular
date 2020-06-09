@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, Output, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IdbService } from '../services/idb.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from '../model/book';
 import { BorrowedBooks } from '../model/borrowed-books';
 import { Student } from '../model/student';
-import { EventEmitter } from 'protractor';
+import { Review } from '../model/review';
 
 @Component({
   selector: 'app-book',
@@ -19,6 +19,9 @@ export class BookComponent implements OnInit, OnDestroy {
   brwStudent: Student;
   brwBook: Book;
   isBookBorrowed: boolean = false;
+  currentStudentTest: number = 1; // Glacy Leitao...
+
+  reviews: Array<Review>;
 
   constructor(
       private idb: IdbService, 
@@ -27,9 +30,17 @@ export class BookComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.paramSub = this.route.params.subscribe(params => {
-      this.idb.get('books-store', Number(params['_id']))
+      this.idb.get(this.idb.BOOKS, Number(params['_id']))
         .then(data => {
           this.book = data as Book;
+
+          this.idb.getAllReviewsByBook(this.idb.REVIEWS, this.book._id)
+            .then(reviews => {
+              this.reviews = reviews as Array<Review>;
+          }).catch(err =>  {
+            console.log("None review was found "+ err);
+          });
+          
       }).catch(err => {
           console.log("None book was found "+ err);
       });

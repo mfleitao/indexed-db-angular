@@ -9,6 +9,7 @@ export class IdbService {
     BOOKS: string = "books-store";
     BORROWED_BOOKS: string = "borrowed-books-store";
     STUDENTS: string = "students-store";
+    REVIEWS: string = "reviews-store";
     
     constructor(private dataService: DataService) {
         let open = this.openDB();
@@ -106,6 +107,28 @@ export class IdbService {
                 request.onsuccess = () => {
                     request.result.forEach(data => {
                         if (data.student._id == key)
+                            items.push(data);
+                    });
+                    resolve(items);
+                }
+                request.onerror = () => reject(request.error);
+                tx.oncomplete = () => db.close();
+            }
+        });
+    }
+
+    public getAllReviewsByBook(objectStore, key) {
+        let items: Array<any> = [];
+        return new Promise((resolve, reject) => {
+            let open = this.openDB();
+            open.onsuccess = () => {
+                let db = open.result;
+                let tx = db.transaction(objectStore, 'readwrite');
+                let store = tx.objectStore(objectStore);
+                let request = store.getAll();
+                request.onsuccess = () => {
+                    request.result.forEach(data => {
+                        if (data.book._id == key)
                             items.push(data);
                     });
                     resolve(items);
